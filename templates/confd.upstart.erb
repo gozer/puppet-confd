@@ -1,6 +1,6 @@
 # Confd Agent (Upstart unit)
 description "Confd Agent"
-start on (local-filesystems and net-device-up IFACE!=lo)
+start on (local-filesystems and consul and net-device-up IFACE!=lo)
 stop on runlevel [06]
 
 env CONFD=/usr/local/bin/confd
