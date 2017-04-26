@@ -5,15 +5,33 @@
 class confd::config inherits confd {
 
   # create configuration directory structure
-  file { $confd::confdir:
-    ensure => directory,
-    owner  => 'root',
-    mode   => '0750'
-  } ->
+  if ($confd::source) {
+    file { $confd::confdir:
+      ensure => directory,
+      owner  => 'root',
+      mode   => '0750'
+      recurse => true,
+      purge   => false,
+      owner   => 'root',
+      group   => 'root',
+      source  => $confd::source,
+    }
+  }
+  else {
+    file { $confd::confdir:
+      ensure => directory,
+      owner  => 'root',
+      mode   => '0750'
+    }
+  }
+
   file { "${confd::confdir}/conf.d":
     ensure => directory,
     owner  => 'root',
-    mode   => '0750'
+    mode   => '0750',
+    require => [
+      File[$confd::confdir],
+    ],
   } ->
   file { "${confd::confdir}/templates":
     ensure  => directory,

@@ -8,6 +8,7 @@ class confd(
   $sitemodule    = $confd::params::sitemodule,
 
   $confdir       = $confd::params::confdir,
+  $source        = $confd::params::source,
   $nodes         = $confd::params::nodes,
   $backend       = undef,
   $debug         = undef,
