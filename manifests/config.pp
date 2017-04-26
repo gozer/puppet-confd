@@ -5,29 +5,43 @@
 class confd::config inherits confd {
 
   # create configuration directory structure
-  file { $confd::confdir:
-    ensure => directory,
-    owner  => 'root',
-    mode   => '0750'
-  } ->
-  file { "${confd::confdir}/conf.d":
-    ensure => directory,
-    owner  => 'root',
-    mode   => '0750'
-  } ->
-  file { "${confd::confdir}/templates":
-    ensure  => directory,
-    owner   => 'root',
-    mode    => '0640',
-    recurse => true,
-    source  => "puppet:///modules/${confd::sitemodule}/templates"
-  } ->
-  file { "${confd::confdir}/ssl":
-    ensure  => directory,
-    owner   => 'root',
-    mode    => '0640',
-    recurse => true,
-    source  => "puppet:///modules/${confd::sitemodule}/ssl"
+  if ($confd::source) {
+    notice("Creating $confd::confdir with content from $confd::source")
+    file { $confd::confdir:
+      ensure => directory,
+      owner   => 'root',
+      group   => 'root',
+      mode   => '0750',
+      recurse => true,
+      purge   => false,
+      source  => $confd::source,
+    }
+  }
+  else {
+    file { $confd::confdir:
+      ensure => directory,
+      owner  => 'root',
+      mode   => '0750'
+    }->
+    file { "${confd::confdir}/conf.d":
+      ensure => directory,
+      owner  => 'root',
+      mode   => '0750',
+    } ->
+    file { "${confd::confdir}/templates":
+      ensure  => directory,
+      owner   => 'root',
+      mode    => '0640',
+      recurse => true,
+      source  => "puppet:///modules/${confd::sitemodule}/templates"
+    }->
+    file { "${confd::confdir}/ssl":
+      ensure  => directory,
+      owner   => 'root',
+      mode    => '0640',
+      recurse => true,
+      source  => "puppet:///modules/${confd::sitemodule}/ssl"
+    }
   }
 
   # main configuration file
