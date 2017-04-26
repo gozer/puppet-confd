@@ -6,6 +6,7 @@ class confd::config inherits confd {
 
   # create configuration directory structure
   if ($confd::source) {
+    notice("Creating $confd::confdir with content from $confd::source")
     file { $confd::confdir:
       ensure => directory,
       owner   => 'root',
