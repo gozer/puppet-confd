@@ -22,30 +22,26 @@ class confd::config inherits confd {
       ensure => directory,
       owner  => 'root',
       mode   => '0750'
+    }->
+    file { "${confd::confdir}/conf.d":
+      ensure => directory,
+      owner  => 'root',
+      mode   => '0750',
+    } ->
+    file { "${confd::confdir}/templates":
+      ensure  => directory,
+      owner   => 'root',
+      mode    => '0640',
+      recurse => true,
+      source  => "puppet:///modules/${confd::sitemodule}/templates"
+    }->
+    file { "${confd::confdir}/ssl":
+      ensure  => directory,
+      owner   => 'root',
+      mode    => '0640',
+      recurse => true,
+      source  => "puppet:///modules/${confd::sitemodule}/ssl"
     }
-  }
-
-  file { "${confd::confdir}/conf.d":
-    ensure => directory,
-    owner  => 'root',
-    mode   => '0750',
-    require => [
-      File[$confd::confdir],
-    ],
-  } ->
-  file { "${confd::confdir}/templates":
-    ensure  => directory,
-    owner   => 'root',
-    mode    => '0640',
-    recurse => true,
-    source  => "puppet:///modules/${confd::sitemodule}/templates"
-  } ->
-  file { "${confd::confdir}/ssl":
-    ensure  => directory,
-    owner   => 'root',
-    mode    => '0640',
-    recurse => true,
-    source  => "puppet:///modules/${confd::sitemodule}/ssl"
   }
 
   # main configuration file
