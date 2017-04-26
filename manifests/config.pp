@@ -8,12 +8,11 @@ class confd::config inherits confd {
   if ($confd::source) {
     file { $confd::confdir:
       ensure => directory,
-      owner  => 'root',
+      owner   => 'root',
+      group   => 'root',
       mode   => '0750',
       recurse => true,
       purge   => false,
-      owner   => 'root',
-      group   => 'root',
       source  => $confd::source,
     }
   }
