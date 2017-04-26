@@ -9,7 +9,7 @@ class confd::config inherits confd {
     file { $confd::confdir:
       ensure => directory,
       owner  => 'root',
-      mode   => '0750'
+      mode   => '0750',
       recurse => true,
       purge   => false,
       owner   => 'root',
